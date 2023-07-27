@@ -28,6 +28,7 @@ const SignInUser = async () => {
     })
     if (error) {
         msg.value = error.message;
+        loading.value = false
         throw error
     } else {
         msg.value = "Check your email for the login link!"
