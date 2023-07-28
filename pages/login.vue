@@ -1,16 +1,20 @@
 <script setup lang='ts'>
 const client = useSupabaseClient();
-const user = useSupabaseUser();
 const email = ref<string>('');
 const loading = ref<boolean>(false);
 
+const user = useSupabaseUser();
 onMounted(() => {
-    watchEffect(async () => {
-        if (user.value) {
-            await navigateTo('/')
-        }
+    watchEffect(() => {
+        console.log(user.value?.id)
     });
+    console.log(user.value?.id)
 })
+
+watch(user, () => {
+    if (user.value?.id)
+        navigateTo('/')
+}, { immediate: true, deep: true })
 
 const msg = ref<string>('');
 
@@ -24,7 +28,10 @@ const ValidEmail = computed<boolean>(() => {
 const SignInUser = async () => {
     loading.value = true
     const { error } = await client.auth.signInWithOtp({
-        email: email.value
+        email: email.value,
+        options: {
+            emailRedirectTo: `${location.origin}`,
+        }
     })
     if (error) {
         msg.value = error.message;
@@ -34,7 +41,7 @@ const SignInUser = async () => {
         msg.value = "Check your email for the login link!"
     }
     loading.value = false
-    console.log("email sent");
+    console.log("email sent", location.origin);
 }
 
 </script>

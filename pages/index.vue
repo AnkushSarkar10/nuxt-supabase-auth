@@ -9,6 +9,7 @@ const client = useSupabaseClient();
 
 const logout = async () => {
   const { error } = await client.auth.signOut();
+  console.log('logout')
   if (error) throw error
   navigateTo('/login')
 }
@@ -33,9 +34,12 @@ onMounted(() => {
       </button>
     </div>
 
-    <h1 class="text-4xl font-bold pt-32">User Management with Nuxt and Supabase</h1>
+    <h1 class="text-4xl font-bold pt-20">User Management with Nuxt and Supabase</h1>
 
-    <h1 class="text-xl font-bold pt-32">{{ theThing }}</h1>
+    <h1 class="text-xl font-bold pt-20 pb-10">{{ theThing }}</h1>
+    <NuxtLink v-if="user" to="/profile" class="px-5 py-2 bg-green-600 font-semibold text-lg uppercase rounded">
+      Profile
+    </NuxtLink>
 
   </div>
 </template>
