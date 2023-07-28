@@ -1,20 +1,20 @@
 <script setup lang='ts'>
+
 const client = useSupabaseClient();
 const email = ref<string>('');
 const loading = ref<boolean>(false);
 
-const user = useSupabaseUser();
+const route = useRoute()
 onMounted(() => {
-    watchEffect(() => {
-        console.log(user.value?.id)
-    });
-    console.log(user.value?.id)
+    if (route.hash.includes('#access_token')) {
+        console.log(route.hash)
+    }
 })
 
-watch(user, () => {
-    if (user.value?.id)
-        navigateTo('/')
-}, { immediate: true, deep: true })
+const user = useSupabaseUser();
+watchEffect(async () => {
+    if (user.value) await navigateTo("/");
+});
 
 const msg = ref<string>('');
 
@@ -30,7 +30,7 @@ const SignInUser = async () => {
     const { error } = await client.auth.signInWithOtp({
         email: email.value,
         options: {
-            emailRedirectTo: `${location.origin}`,
+            emailRedirectTo: `${location.origin}/login`,
         }
     })
     if (error) {
