@@ -11,10 +11,13 @@ onMounted(() => {
     }
 })
 
-const user = useSupabaseUser();
-watchEffect(async () => {
-    if (user.value) await navigateTo("/");
-});
+const user = useSupabaseUser()
+watchEffect(() => {
+    console.log("watch effect ran")
+    if (user.value) {
+        navigateTo('/')
+    }
+})
 
 const msg = ref<string>('');
 
@@ -30,7 +33,7 @@ const SignInUser = async () => {
     const { error } = await client.auth.signInWithOtp({
         email: email.value,
         options: {
-            emailRedirectTo: `${location.origin}/login`,
+            emailRedirectTo: `${location.origin}/confirm`,
         }
     })
     if (error) {
