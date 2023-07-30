@@ -13,7 +13,6 @@ onMounted(() => {
 
 const user = useSupabaseUser()
 watchEffect(() => {
-    console.log("watch effect ran")
     if (user.value) {
         navigateTo('/')
     }
@@ -84,3 +83,12 @@ const SignInUser = async () => {
         <h1 class="pt-3 text-gray-200">{{ msg }}</h1>
     </div>
 </template>
+
+
+<!-- 
+begin
+  insert into public.profiles(uid, email)
+  values(new.id, new.email);
+  return new;
+end;
+-->
