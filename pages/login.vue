@@ -1,24 +1,17 @@
 <script setup lang='ts'>
-
-const client = useSupabaseClient();
-const email = ref<string>('');
-const loading = ref<boolean>(false);
-
-const route = useRoute()
-onMounted(() => {
-    if (route.hash.includes('#access_token')) {
-        console.log(route.hash)
-    }
-})
+import { Database } from 'types/supabase';
 
 const user = useSupabaseUser()
+const client = useSupabaseClient<Database>();
+const email = ref<string>('');
+const loading = ref<boolean>(false);
+const msg = ref<string>('');
+
 watchEffect(() => {
     if (user.value) {
         navigateTo('/')
     }
 })
-
-const msg = ref<string>('');
 
 const ValidEmail = computed<boolean>(() => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)) {

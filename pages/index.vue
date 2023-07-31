@@ -1,11 +1,12 @@
 <script setup lang='ts'>
+import { Database } from '../types/supabase'
+
 definePageMeta({
   middleware: 'auth',
 });
 
-const theThing = ref('');
 const user = useSupabaseUser();
-const client = useSupabaseClient();
+const client = useSupabaseClient<Database>();
 
 const logout = async () => {
   const { error } = await client.auth.signOut();
@@ -16,10 +17,7 @@ const logout = async () => {
 
 
 onMounted(() => {
-  console.log(user.value?.id)
-  if (user.value) {
-    theThing.value = user.value?.id
-  }
+  console.log(user.value?.id);
 })
 </script>
 
@@ -36,8 +34,7 @@ onMounted(() => {
 
     <h1 class="text-4xl font-bold pt-20">User Management with Nuxt and Supabase</h1>
 
-    <h1 class="text-xl font-bold pt-20 pb-10">{{ theThing }}</h1>
-    <NuxtLink v-if="user" to="/profile" class="px-5 py-2 bg-green-600 font-semibold text-lg uppercase rounded">
+    <NuxtLink v-if="user" to="/profile" class="mt-10 px-5 py-2 bg-green-600 font-semibold text-lg uppercase rounded">
       Profile
     </NuxtLink>
 
